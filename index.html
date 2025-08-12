@@ -168,13 +168,35 @@
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         
-        /* Enhanced Reviews Gallery */
+        /* Horizontal Carousel Reviews Gallery */
         .reviews-gallery {
-            display: grid;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
             gap: 20px;
+            padding: 20px 0;
             margin-bottom: 30px;
-            /* Responsive grid that adapts to screen size */
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        }
+        
+        .reviews-gallery::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .reviews-gallery::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        
+        .reviews-gallery::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+        
+        .reviews-gallery::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
         }
         
         .review-card {
@@ -187,6 +209,10 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            width: 280px;
+            height: 600px;
         }
         
         .review-card::before {
@@ -205,7 +231,7 @@
         }
         
         .review-card:hover {
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-5px) scale(1.02);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             background: rgba(255, 255, 255, 0.15);
             border-color: rgba(255, 255, 255, 0.4);
@@ -213,16 +239,34 @@
         
         .review-image {
             width: 100%;
-            height: 250px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 15px;
+            border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
         }
         
         .review-card:hover .review-image {
-            transform: scale(1.05);
+            transform: scale(1.02);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Carousel Navigation Hints */
+        .carousel-hint {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            opacity: 0.8;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .carousel-hint::before {
+            content: "← ";
+        }
+        
+        .carousel-hint::after {
+            content: " →";
         }
         
         /* Floating background elements */
@@ -268,7 +312,7 @@
             display: none;
             position: fixed;
             z-index: 999;
-            padding-top: 50px;
+            padding-top: 20px;
             left: 0;
             top: 0;
             width: 100%;
@@ -280,11 +324,12 @@
         }
         
         .modal-content {
-            max-width: 90%;
-            max-height: 80vh;
+            max-width: 95%;
+            max-height: 90vh;
             border-radius: 15px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             animation: modalSlideIn 0.4s ease;
+            object-fit: contain;
         }
         
         .close {
@@ -353,86 +398,8 @@
         
         /* Responsive Design */
         
-        /* Large Desktop */
-        @media (min-width: 1200px) {
-            .reviews-gallery {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 30px;
-            }
-            
-            .review-image {
-                height: 280px;
-            }
-            
-            .container {
-                padding: 30px;
-            }
-        }
-        
-        /* Desktop */
-        @media (min-width: 992px) and (max-width: 1199px) {
-            .reviews-gallery {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 25px;
-            }
-            
-            .review-image {
-                height: 260px;
-            }
-        }
-        
-        /* Tablet */
-        @media (min-width: 768px) and (max-width: 991px) {
-            .reviews-gallery {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-            
-            .review-image {
-                height: 220px;
-            }
-            
-            .hero {
-                padding: 50px 0 35px;
-            }
-            
-            .profile-image {
-                width: 110px;
-                height: 110px;
-            }
-        }
-        
-        /* Mobile Large */
-        @media (min-width: 576px) and (max-width: 767px) {
-            .reviews-gallery {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            
-            .review-image {
-                height: 180px;
-            }
-            
-            .review-card {
-                padding: 12px;
-            }
-            
-            .container {
-                padding: 20px 15px;
-            }
-        }
-        
-        /* Mobile Small */
-        @media (max-width: 575px) {
-            .reviews-gallery {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .review-image {
-                height: 200px;
-            }
-            
+        /* Mobile Responsive Carousel */
+        @media (max-width: 768px) {
             .container {
                 padding: 15px;
             }
@@ -446,6 +413,17 @@
                 height: 100px;
             }
             
+            .reviews-gallery {
+                gap: 15px;
+                padding: 15px 0;
+            }
+            
+            .review-card {
+                padding: 12px;
+                width: 250px;
+                height: 500px;
+            }
+            
             .cta-section {
                 gap: 12px;
             }
@@ -456,7 +434,7 @@
             }
             
             .modal {
-                padding-top: 20px;
+                padding-top: 10px;
             }
             
             .close {
@@ -464,20 +442,44 @@
                 right: 20px;
                 font-size: 30px;
             }
+            
+            .modal-content {
+                max-width: 98%;
+                max-height: 85vh;
+            }
+            
+            .carousel-hint {
+                font-size: 12px;
+            }
         }
         
         /* Extra Small Mobile */
         @media (max-width: 375px) {
-            .review-image {
-                height: 160px;
-            }
-            
             .reviews-title {
                 margin-bottom: 30px;
             }
             
             .review-card {
                 padding: 10px;
+                width: 220px;
+                height: 450px;
+            }
+            
+            .reviews-gallery {
+                gap: 12px;
+            }
+        }
+        
+        /* Large Desktop - Bigger carousel cards */
+        @media (min-width: 1200px) {
+            .review-card {
+                width: 320px;
+                height: 650px;
+                padding: 18px;
+            }
+            
+            .reviews-gallery {
+                gap: 25px;
             }
         }
         
@@ -516,7 +518,7 @@
             }
             
             .review-image {
-                height: 140px;
+                min-height: 200px;
             }
         }
     </style>
@@ -580,6 +582,10 @@
                 <div class="review-card" onclick="openModal('6.jpeg')">
                     <img src="6.jpeg" alt="Customer Review 6" class="review-image">
                 </div>
+            </div>
+            
+            <div class="carousel-hint">
+                Scroll to see more reviews
             </div>
         </div>
     </div>
